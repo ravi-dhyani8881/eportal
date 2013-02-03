@@ -33,8 +33,9 @@ if (isset($_POST['action'])) {
             
         }
     } else {
+        
         header("Location:../phps/login.php"); 
-
+        
     }
     
 }
