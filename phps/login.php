@@ -31,7 +31,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
         <table style="  display: block; left: 37%;   position: absolute;    top: 30%;    width: 390px;" cellpadding="0" cellspacing="0" >
             <tr>
                 <td >
-                    <table  style=" float: left;    margin-left: -3px;    width: 104%;">
+                    <table  style=" float: left;  margin-left: -3px;    width: 104%;">
                         <tr><td >
 
                                 <span class="left-box"></span><span class="cent-box">Login Information</span><span class="right-box"></span>
@@ -40,9 +40,28 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                     </table>
                 </td>
             </tr>
+            
+            
+            
             <tr><td style="text-align:left;vertical-align:top" >
                     <table class="main" style="width:100%">
-
+                        <?php 
+                        
+                        
+                        
+                        if($dbConf=='Invalid'){
+                        
+                            echo '<tr><td style="width:10%">';
+                            echo '</td>';
+                            echo '<td style="width:40%;">';
+                            echo '<p style="color:red; margin:13px 0 6px 12px;">Invalid User Name Password';
+                            echo '</p>';
+                            echo '</td>';
+                            echo '</tr>';
+                        }
+                        ?>
+                        
+                        
                         <tr><td style="width:10%">
                                 <p class="label">
                                     Username:</p></td>
@@ -123,6 +142,8 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
     if (isset($_POST['action'])) {
         if ($_POST['action'] == 'Login') {
             $login_id = $_POST['login_id'];
+            
+            
             $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
             if (!$con) {
                 die('Could not connect: ' . mysql_error());

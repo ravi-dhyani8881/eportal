@@ -3,10 +3,9 @@
 require_once '../includes/global.inc.php';
 
 if (!isset($_POST['login_id'])) { // if page is not submitted to itself echo the form
-
-
-
  	include( "headerl.php");
+        
+        
 
  ?>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
@@ -218,7 +217,7 @@ text-shadow: 0 1px 1px #2A4E69;" onclick="javascript:window.location = 'login.ph
 <?php
 
 } else {
-echo "hi";
+
 
 	
 
@@ -230,7 +229,7 @@ echo "hi";
 
 
 
-			$con = mysql_connect("localhost","linuxwin_testing","LeV%pxVhK~d@");
+			$con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
 
 			if (!$con)
 
@@ -242,7 +241,7 @@ echo "hi";
 
 
 
-			mysql_select_db("linuxwin_testing", $con);
+			mysql_select_db($_SESSION['databaseName'], $con);
 
 
 
