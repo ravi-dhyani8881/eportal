@@ -24,6 +24,11 @@ if (isset($_POST['action'])) {
    
     
     $count=mysql_num_rows($result);
+    
+    $account_id = $row['ACCOUNT_ID'];
+    $account_type = $row['ACCOUNT_TYPE'];
+    $user_password= $row['PASSWORD'];
+    
      echo ($count);
     
     if ($count==1) {
@@ -31,10 +36,13 @@ if (isset($_POST['action'])) {
         while ($row = mysql_fetch_array($result)) {
             
             
+            
+            
+            
         }
     } else {
         
-        header("Location:../phps/login.php"); 
+        header("Location:../phps/login.php?error=invalid"); 
         
     }
     

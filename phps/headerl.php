@@ -14,7 +14,7 @@
 
 <body>
 
-<form   action="<?php echo $_SERVER['PHP_SELF'];?>" method="post" name="reg">
+    <form   action="ValidateUser.php" method="post" name="reg">
 
 <table width="1200" border="0" cellspacing="0" cellpadding="0"  align="center" >
 

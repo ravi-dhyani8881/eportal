@@ -49,7 +49,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                         
                         
                         
-                        if($dbConf=='Invalid'){
+                        if($_REQUEST["error"]=='invalid'){
                         
                             echo '<tr><td style="width:10%">';
                             echo '</td>';
