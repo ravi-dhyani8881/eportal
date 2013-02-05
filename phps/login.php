@@ -47,9 +47,9 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                     <table class="main" style="width:100%">
                         <?php 
                         
+                         
                         
-                        
-                        if($_REQUEST["error"]=='invalid'){
+                        if(isset($_REQUEST['error'])=='invalid'){
                         
                             echo '<tr><td style="width:10%">';
                             echo '</td>';
