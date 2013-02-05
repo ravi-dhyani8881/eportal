@@ -1,7 +1,8 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+$result="ravi";
+$result2=  md5($result);
+
+echo ($result2);
+
 ?>
