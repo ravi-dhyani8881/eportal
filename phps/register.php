@@ -20,7 +20,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                 if (pass1 == ""){ alert("Please Insert Password"); $("#pass1").css("border","1px solid red"); return false; }
                 if (p <= 5){ alert("Password Must Be 6 Character"); $("#pass1").css("border","1px solid red"); return false; }
                 if (pass2 == ""){ alert("Please Insert Password"); $("#pass2").css("border","1px solid red"); return false; }
-                if (pass2 != pass1){ alert("Confirm Password Mismatch");$("#pass2").css("border","1px dashed solid red"); return false; }
+                if (pass2 != pass1){ alert("Confirm Password Mismatch");$("#pass2").css("border","1px  solid red"); return false; }
         				
                 var answer1 = $('#answer1').val();
                 var answer2 = $('#answer2').val();
