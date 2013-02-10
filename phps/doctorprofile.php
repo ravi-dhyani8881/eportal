@@ -1,5 +1,7 @@
 <?php
 require_once '../includes/global.inc.php';
+
+
 if (!isset($_POST['action'])) { // if page is not submitted to itself echo the form
 
  	include( "header.php");
