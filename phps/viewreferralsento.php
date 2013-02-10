@@ -18,21 +18,19 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 	<?php
 
- 	include( "navigationd.php");
+ 	include( "navigationo.php");
 
  	$account_id=$_SESSION['staff_account_id'];
 
- 	if(isset($_GET['status_cd']))
-
- 	{
+ 	
 
 
 
- 		$result=$db->getReferrals($account_id,$_GET['status_cd']);
+ 		$result=$db->getReferrals($account_id,'2');
 
 
 
- 	}
+ 	
 
 
 
@@ -46,40 +44,20 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
 
-<table style="margin:40px;width:800px;position: absolute;
+<table style="margin:40px;width:800px; margin: 40px 40px 345px;
 top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 <tr><td>
 
+                        <table style="float: left;    margin-left: -3px;    width: 104%;">
+                            <tr><td >
 
+                                    <span class="left-box"></span><span class="cent-box" style="width:786px;"> View Referral sent</span><span class="right-box"></span>
 
-<table class="header" style="width:100%">
-
-<tr><td >
-
-	<?php
-
-	if($_GET['status_cd']==2){
-
- 			echo "View Referral sent";
-
- 		}else if($_GET['status_cd']==1){
-
- 			echo "View Referral to be sent";
-
- 		}
-
-
-
-?>
-
-</td></tr>
-
-</table>
-
-</td>
-
-</tr>
+                                </td></tr>
+                        </table>
+                    </td>
+                </tr>
 
 <tr><td>
 

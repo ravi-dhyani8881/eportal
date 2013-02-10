@@ -4,30 +4,49 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
  	include( "header.php");
  ?>
+<script type="text/javascript">
+jQuery(function($){   
+   $("#cell").mask("(999) 999-9999");
+   $("#work").mask("(999) 999-9999? x99999");   
+    var tech = GetURLParameter('msg');
+    if(tech=='update'){
+        $('#notifications').show();
+        $('#notifications').slideUp(4000).delay(25000);
+    }   
+});
+</script>
+<span class="notifications" id="notifications" style="display: none;" >		
+		<p>Your settings have been updated successfully.</p>
+		</span>
+
 
 <tr>
-<td style="background-color:white;width:300px;vertical-align:middle;">
+<td style="background-color:white;width:300px;vertical-align:middle; height: 500px;">
 	<?php
  	include( "navigationd.php");
- 	$con = mysql_connect("localhost","linuxwin_testing","LeV%pxVhK~d@");
+ 	 $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
  	if (!$con)
  	{
  		die('Could not connect: ' . mysql_error());
  	}
 
- 	mysql_select_db("prijal_healthmd", $con);
+ 	mysql_select_db($_SESSION['databaseName'], $con);
  //	$account_id=$_SESSION['account_id'];
  	$account_id=$_SESSION['staff_account_id'];
- 	$result = mysql_query("SELECT spclty_type_cd,last_name,first_name,email_address,work_phone,cell_phone, org_name
+ 	$result = mysql_query("SELECT spclty_type_cd,last_name,first_name,email_address,work_phone,cell_phone, org_name , middle_name ,gender
  		FROM  org_staff WHERE account_id = '$account_id'");
  	$row = mysql_fetch_assoc($result);
- 	$specialties = $row['spclty_type_cd'];
+ 	
+        
+        $specialties = $row['spclty_type_cd'];
+        
+        
  	$lastname = $row['last_name'];
  	$firstname =  $row['first_name'];
  	//$gender= $row['gender'];
  	$email= $row['email_address'];
  	$work=$row['work_phone'];
- 	$cell=$row['cell_phone'];
+        $cell=$row['cell_phone'];
  	$org_name = $row['org_name'];
  	//echo "Org name is ---  $org_name";
 
@@ -35,20 +54,20 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
  ?>
 </td>
 <td style="background-color:white;width:900px;text-align:top;">
-<table style="margin:40px;width:800px" cellpadding="0px" cellspacing="0px;" >
+<table style="margin: 0 40px 30px;width:800px" cellpadding="0px" cellspacing="0px;" >
 <tr><td>
 
-<table class="header" style="width:100%">
-<tr><td >
+                        <table style="float: left;    margin-left: -3px;    width: 104%;">
+                            <tr><td >
 
-Doctor Profile Information
+                                    <span class="left-box"></span><span class="cent-box" style="width:786px;">Doctor Profile Information</span><span class="right-box"></span>
 
-</td></tr>
-</table>
-</td>
-</tr>
+                                </td></tr>
+                        </table>
+                    </td>
+                </tr>
 <tr><td>
-<input type="hidden" name="account_id" value="<?php echo $_REQUEST['account_id'];?>"/>
+<input type="hidden" name="account_id" value="<?php echo $_SESSION['staff_account_id'];?>"/>
 <table class="main" style="width:100%">
 <tr>
 <td colspan="4" style="width:100%">
@@ -97,7 +116,7 @@ size="35" maxlength="35"/>
 </tr>
 
 <tr><td style="width:10%">
-Middle Name:</td><td style="width:40%;"> <input type="text" name="middlename"
+Middle Name:</td><td style="width:40%;"> <input type="text" name="middlename" value="<?php echo $row['middle_name'];?>"
 size="35" maxlength="35" />
 </td>
 </tr>
@@ -105,9 +124,24 @@ size="35" maxlength="35" />
 
 <td style="width:10%">
 
-Gender: </td><td colspan="3" style="width:90%">Female&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" value="f">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Male<input type="radio" name="gender" value="m">
+Gender: </td>
+
+<td colspan="3" style="width:90%">
+    <?php
+    if($row['gender']=='M'){
+        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
+        echo 'Male<input type="radio" checked="true" style="width:0px;" name="gender" value="M">';       
+    } elseif ($row['gender']=='F') {
+         echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" checked="true" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
+        echo 'Male<input type="radio" style="width:0px;"  name="gender" value="M">';     
+    }else{
+         echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
+        echo 'Male<input type="radio"  name="gender" style="width:0px;" value="M">';     
+    }
+    ?>
+    
 </td>
+
 </tr>
 
 <tr>
@@ -144,17 +178,17 @@ Phone Number(s)
 <table style="width:70%">
 <tr>
 <td style="width:10%">
-Work:</td> <td style="width:40%"><input type="text" name="work"  value="<?php echo $work;?>"
-size="15" maxlength="15" />
+    Work:</td> <td style="width:40%"><input type="text" id="work" name="work" style="width: 150px;"    value="<?php echo $work;?>"
+size="30" maxlength="30" />
 </td>
 <td style="width:10%">
-Cell:</td><td style="width:40%"><input type="text" name="cell"  value="<?php echo $cell;?>"
+Cell:</td><td style="width:40%"><input type="text" id="cell" name="cell" style="width: 150px;" value="<?php echo $cell;?>"
 size="15" maxlength="15"/>
 </td>
 </tr>
 <tr><td  style="width:10%">
 <p>
-Email:</p></td> <td colspan="3" style="width:90%"><p><input type="text" name="email" size="75" maxlength="75"
+Email:</p></td> <td colspan="3" style="width:90%"><p><input type="text" name="email"  size="75" maxlength="75"
  value="<?php echo $email;?>"
 />
 </p>
@@ -223,6 +257,8 @@ mysql_close($con);
 		if( $_POST['action']=='Save'){
 			$lastname = $_POST['lastname'];
 			$firstname =  $_POST['firstname'];
+                        $middleName =  $_POST['middlename'];
+                        
 			//$account_id= $_POST['account_id'];
 		//	$account_id= $_REQUEST['account_id'];
 		//	$account_id= $_SESSION['account_id'];
@@ -233,14 +269,16 @@ mysql_close($con);
 			$work=$_POST['work'];
 			$cell=$_POST['cell'];
 			$org_name = $_POST['org_name'];
+                        $gender = $_POST['gender'];
+                        
 
-			$con = mysql_connect("localhost","root");
+                        $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
 			if (!$con)
 			{
 				die('Could not connect: ' . mysql_error());
 			}
 
-			mysql_select_db("prijal_healthmd", $con);
+			mysql_select_db($_SESSION['databaseName'], $con);
 
 			echo "Org name is $org_name";
 			$org_result = mysql_query("SELECT org_name FROM organization WHERE org_id='$org_name'");
@@ -255,15 +293,15 @@ mysql_close($con);
 			if($num_rows==0){
 
 				mysql_query("INSERT INTO org_staff (staff_id,account_id,org_name,spclty_type_cd,last_name,
-					first_name,email_address,work_phone,cell_phone)
-					VALUES (0,'$account_id','$neworg_name',$specialties,'$lastname','$firstname','$email','$work','$cell')");
+					first_name,email_address,work_phone,cell_phone , middle_name )
+					VALUES (0,'$account_id','$neworg_name',$specialties,'$lastname','$firstname','$email','$work','$cell','$middleName')");
 
 
 			}else	{
 
 				mysql_query("UPDATE org_staff SET spclty_type_cd='$specialties', org_name='$neworg_name',
 				last_name='$lastname',first_name='$firstname',email_address='$email',
-				work_phone='$work',cell_phone='$cell' WHERE account_id = '$account_id'");
+				work_phone='$work',cell_phone='$cell', gender='$gender' , middle_name='$middleName' WHERE account_id = '$account_id'");
 
 			}
 			$result = mysql_query("SELECT staff_id FROM  org_staff WHERE account_id = '$account_id'");
@@ -271,7 +309,7 @@ mysql_close($con);
 			$staff_id=$row['staff_id'];
 			$_SESSION['staff_id'] =$staff_id;
 			mysql_close($con);
-			$nextpage='maind.php';
+			$nextpage='doctorprofile.php?msg=update';
 		}else if( $_POST['action']=='Close')
 			$nextpage='maind.php';
 	}

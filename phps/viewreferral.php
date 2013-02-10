@@ -20,7 +20,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
 
- 	$con = mysql_connect("localhost","linuxwin_testing","LeV%pxVhK~d@");
+ 	$con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
 
 	 	if (!$con)
 
@@ -32,7 +32,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
 
-	 	mysql_select_db("prijal_healthmd", $con);
+	 	mysql_select_db($_SESSION['databaseName'], $con);
 
 	 	$referral_id=$_SESSION['referral_id'];
 

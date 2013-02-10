@@ -1,30 +1,60 @@
-<?php
 
+
+<?php
 require_once '../includes/global.inc.php';
 if (!isset($_POST['action'])) { // if page is not submitted to itself echo the form
-    include( "headerl.php");
+    include( "header.php");
     $dbConf = new DB();
-    $_SESSION['databaseURL']=$dbConf->get_db_host();
-    $_SESSION['databaseUName']=$dbConf->get_db_user();
-    $_SESSION['databasePWord']=$dbConf->get_db_pass();
-    $_SESSION['databaseName']=$dbConf->get_db_name();
-    
+    $_SESSION['databaseURL'] = $dbConf->get_db_host();
+    $_SESSION['databaseUName'] = $dbConf->get_db_user();
+    $_SESSION['databasePWord'] = $dbConf->get_db_pass();
+    $_SESSION['databaseName'] = $dbConf->get_db_name();
     ?>
     <tr>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
-
     <script type="text/javascript">
         $(document).ready(function() {
-    		
+            		
             $('#fsubmit').click(function() {
-    			
+            			
                 var username = $('#username').val();
                 if (username == ""){ alert("Please Insert Username"); $("#username").css("border","1px solid red"); return false; }
-    			
+            			
                 var password = $('#password').val();
                 if (password == ""){ alert("Please Insert Password"); $("#password").css("border","1px solid red"); return false; }
             })
-    		
+                    
+            var watermarkUser = 'Enter your user name';
+            var watermarkPassword = 'Enter your password';
+                    
+            $('#username').val(watermarkUser).addClass('watermark');
+            $('#password').val(watermarkPassword).addClass('watermark');
+                    
+            $('#username').blur(function(){
+                if ($(this).val().length == 0){
+                    $(this).val(watermarkUser).addClass('watermark');
+                }
+            });
+         
+        	
+            $('#username').focus(function(){
+                if ($(this).val() == watermarkUser){
+                    $(this).val('').removeClass('watermark');
+                }
+            });
+                
+                
+            $('#password').blur(function(){
+                if ($(this).val().length == 0){
+                    $(this).val(watermarkPassword).addClass('watermark');
+                }
+            });    
+        	
+            $('#password').focus(function(){
+                if ($(this).val() == watermarkPassword){
+                    $(this).val('').removeClass('watermark');
+                }
+            }); 
+            		
         });
     </script>
     <td style="background-color:white;height:600px;width:1200px;text-align:top;">
@@ -40,17 +70,14 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                     </table>
                 </td>
             </tr>
-            
-            
-            
+
+
+
             <tr><td style="text-align:left;vertical-align:top" >
                     <table class="main" style="width:100%">
-                        <?php 
-                        
-                         
-                        
-                        if(isset($_REQUEST['error'])=='invalid'){
-                        
+                        <?php
+                        if (isset($_REQUEST['error']) == 'invalid') {
+
                             echo '<tr><td style="width:10%">';
                             echo '</td>';
                             echo '<td style="width:40%;">';
@@ -60,8 +87,8 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                             echo '</tr>';
                         }
                         ?>
-                        
-                        
+
+
                         <tr><td style="width:10%">
                                 <p class="label">
                                     Username:</p></td>
@@ -110,11 +137,11 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                             <input type="submit" name="action" value="Reset" style="background-color: #3a6a8e;border-radius:5px;height: 35px; width: 100px"/>
 
                                         </td>
-    <?php /* ?><td style="width:40%" class="sub-bttn">
+                                        <?php /* ?><td style="width:40%" class="sub-bttn">
 
-      <p> <input type="submit" name="action" value="Forgot Password" style="background-color:#3a6a8e;border-radius:5px;height: 35px; width: 140px"/>
-      </p>
-      </td><?php */ ?>
+                                          <p> <input type="submit" name="action" value="Forgot Password" style="background-color:#3a6a8e;border-radius:5px;height: 35px; width: 140px"/>
+                                          </p>
+                                          </td><?php */ ?>
                                     </tr>
                                 </table></div>
 
@@ -141,51 +168,74 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
     if (isset($_POST['action'])) {
         if ($_POST['action'] == 'Login') {
-            $login_id = $_POST['login_id'];
             
             
-            $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
+            if (isset($_REQUEST["password"])) {
+                $password = $_REQUEST["password"];
+            }
+
+            if (isset($_REQUEST["login_id"])) {
+                $login = $_REQUEST["login_id"];
+            }
+
+                
+             $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
             if (!$con) {
                 die('Could not connect: ' . mysql_error());
             }
-
             mysql_select_db($_SESSION['databaseName'], $con);
-            $result = mysql_query("SELECT account_id, account_type FROM  user_account WHERE login_id = '$login_id'");
-            $row = mysql_fetch_assoc($result);
-            $account_id = $row['account_id'];
-            $account_type = $row['account_type'];
-            //echo $account_id;
-            //	echo $account_type;
-            //$_SESSION['account_id'] =$account_id;
-            $nextpage = 'login.php';
-            if ($account_type == 'staff') {
-                $result = mysql_query("SELECT staff_id FROM  org_staff WHERE account_id = '$account_id'");
-                $row = mysql_fetch_assoc($result);
-                $staff_id = $row['staff_id'];
-                $_SESSION['staff_id'] = $staff_id;
-                $_SESSION['staff_account_id'] = $account_id;
-                $_SESSION['login_type'] = 'staff';
-                $nextpage = 'maind.php';
-            } else if ($account_type == 'patient') {
-                $result = mysql_query("SELECT patient_id FROM  patient WHERE account_id = '$account_id'");
-                $row = mysql_fetch_assoc($result);
-                $patient_id = $row['patient_id'];
-                $_SESSION['patient_id'] = $patient_id;
-                $_SESSION['patient_account_id'] = $account_id;
-                $_SESSION['login_type'] = 'patient';
-                $nextpage = 'mainp.php';
-            } else if ($account_type == 'organization') {
-                $_SESSION['org_account_id'] = $account_id;
-                $_SESSION['login_type'] = 'organization';
-                $nextpage = 'organizationprofile.php';
+            
+            
+            $result = mysql_query("SELECT ACCOUNT_ID ,ACCOUNT_TYPE , PASSWORD , login_id FROM  user_account WHERE login_id = '$login'");
+           
+            $count = mysql_num_rows($result);
+            
+            if ($count == 1) {
+        while ($row = mysql_fetch_array($result)) {
+
+            if ($login == $row['login_id'] && md5($password) == $row['PASSWORD']) {
+
+                $account_type = $row['ACCOUNT_TYPE'];
+                $account_id = $row['ACCOUNT_ID'];
+                
+                
+                if ($account_type == 'staff') {
+                    $result = mysql_query("SELECT staff_id FROM  org_staff WHERE account_id = '$account_id'");
+                    $row = mysql_fetch_assoc($result);
+                    $staff_id = $row['staff_id'];
+                    $_SESSION['staff_id'] = $staff_id;
+                    $_SESSION['staff_account_id'] = $account_id;
+                    $_SESSION['login_type'] = 'staff';
+
+                   header("Location:../phps/doctorprofile.php");
+                    //   $nextpage = 'maind.php';
+                } else if ($account_type == 'patient') {
+                    $result = mysql_query("SELECT patient_id FROM  patient WHERE account_id = '$account_id'");
+                    $row = mysql_fetch_assoc($result);
+                    $patient_id = $row['patient_id'];
+                    $_SESSION['patient_id'] = $patient_id;
+                    $_SESSION['patient_account_id'] = $account_id;
+                    $_SESSION['login_type'] = 'patient';
+                    header("Location:../phps/patientprofile.php");
+                    //  $nextpage = 'mainp.php';
+                } else if ($account_type == 'organization') {
+                    $_SESSION['org_account_id'] = $account_id;
+                    $_SESSION['login_type'] = 'organization';
+
+                    header("Location:../phps/organizationprofile.php");
+
+                    //   $nextpage = 'organizationprofile.php';
+                }
+            } else {
+                header("Location:../phps/login.php?error=invalid");
             }
-        } else if ($_POST['action'] == 'Reset')
-            $nextpage = 'login.php';
-        else if ($_POST['action'] == 'Forgot Password')
-            $nextpage = 'login.php';
-        mysql_close($con);
+        }
+    } else {
+        header("Location:../phps/login.php?error=invalid");
+    }    
+           
     }
-    header("location:" . $nextpage);
-    exit;
+   
+}
 }
 ?>

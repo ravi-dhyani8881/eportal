@@ -1,85 +1,36 @@
 <?php
-
 require_once '../includes/global.inc.php';
-
 if (!isset($_POST['action'])) { // if page is not submitted to itself echo the form
-
-
-
  	include( "header.php");
-
  ?>
-
-
 
 <tr>
 
 <td style="background-color:rgb(255, 255, 255);height:600px;width:300px;vertical-align:middle;">
-
 	<?php
 
- 	include( "navigationd.php");
+ 	include( "navigationo.php");
 
  	$account_id=$_SESSION['staff_account_id'];
-
- 	if(isset($_GET['status_cd']))
-
- 	{
-
-
-
- 		$result=$db->getReferrals($account_id,$_GET['status_cd']);
-
-
-
- 	}
-
-
-
-
-
+		$result=$db->getReferrals($account_id, '1');
  ?>
-
 </td>
-
 <td style="background-color:rgb(255, 255, 255);height:600px;width:900px;text-align:top;">
 
-
-
-<table style="margin:40px;width:800px;position: absolute;
+<table style="margin:40px;width:800px; margin: 40px 40px 335px;
 top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 <tr><td>
 
+                        <table style="float: left;    margin-left: -3px;    width: 104%;">
+                            <tr><td >
 
+                                    <span class="left-box"></span><span class="cent-box" style="width:786px;"> View Referral to be sent</span><span class="right-box"></span>
 
-<table class="header" style="width:100%">
-
-<tr><td >
-
-	<?php
-
-	if($_GET['status_cd']==2){
-
- 			echo "View Referral sent";
-
- 		}else if($_GET['status_cd']==1){
-
- 			echo "View Referral to be sent";
-
- 		}
-
-
-
-?>
-
-</td></tr>
-
-</table>
-
-</td>
-
-</tr>
+                                </td></tr>
+                        </table>
+                    </td>
+                </tr>
 
 <tr><td>
 

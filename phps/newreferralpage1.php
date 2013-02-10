@@ -1,472 +1,417 @@
 <?php
-
 require_once '../includes/global.inc.php';
-
 if (!isset($_POST['action'])) { // if page is not submitted to itself echo the form
+    include( "header.php");
+    ?>
+    <tr>
+        <td style="background-color:white;height:600px;width:300px;vertical-align:middle;">
+            <?php
+            include( "navigationd.php");
+            $doctor_account_id = $_SESSION['staff_account_id'];
+            $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
+            if (!$con) {
+                die('Could not connect: ' . mysql_error());
+            }
+            mysql_select_db($_SESSION['databaseName'], $con);
 
+            $result = mysql_query("select referral_id,staff_id,patient_id, rfrd_staff_id from  dr_patient_refrl where staff_id='$doctor_account_id'");
 
+            $row = mysql_fetch_assoc($result);
 
- 	include( "header.php");
+            $staff_id = $row['staff_id'];
 
- ?>
+            $patient_id = $row['patient_id'];
 
-<tr>
+            $rfrd_staff_id = $row['rfrd_staff_id'];
+            ?>
 
-<td style="background-color:white;height:600px;width:300px;vertical-align:middle;">
+        </td>
 
-	<?php
+        <td style="background-color:white;height:600px;width:900px;text-align:top;">
 
- 	include( "navigationd.php");
+            <table style="margin:40px;width:800px;position: absolute;
+                   top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
- 	$doctor_account_id=$_SESSION['staff_account_id'];
+                <tr><td>
 
- 	$con = mysql_connect("localhost","linuxwin_testing","LeV%pxVhK~d@");
 
- 	if (!$con)
 
- 	{
+                        <table class="header" style="width:100%">
 
- 		die('Could not connect: ' . mysql_error());
+                            <tr><td >
 
- 	}
 
 
+                                    Patient Referral
 
- 	mysql_select_db("prijal_healthmd", $con);
 
 
+                                </td></tr>
 
- 	$result =mysql_query("select referral_id,staff_id,patient_id, rfrd_staff_id from  dr_patient_refrl where staff_id='$doctor_account_id'");
+                        </table>
 
- 	$row = mysql_fetch_assoc($result);
+                    </td>
 
- 	$staff_id = $row['staff_id'];
+                </tr>
 
- 	$patient_id =  $row['patient_id'];
+                <tr><td>
 
- 	$rfrd_staff_id =  $row['rfrd_staff_id'];
 
- ?>
 
-</td>
+                        <table class="main" style="width:100%">
 
-<td style="background-color:white;height:600px;width:900px;text-align:top;">
 
-<table style="margin:40px;width:800px;position: absolute;
-top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
-<tr><td>
+                            <tr>
 
+                                <td style="width:20%">
 
+                                    <p class="bold">
 
-<table class="header" style="width:100%">
+                                        Referral Type:</p> </td><td colspan="3" style="width:80%">Practice&nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="practice">
 
-<tr><td >
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physician<input type="radio" name="type" value="physician">
 
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dentist<input type="radio" name="type" value="dentist">
 
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hospital<input type="radio" name="type" value="hospital">
 
-Patient Referral
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nurse<input type="radio" name="type" value="nurse">
 
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Administrator<input type="radio" name="type" value="administrator">
 
+                                </td>
 
-</td></tr>
+                            </tr>
 
-</table>
 
-</td>
 
-</tr>
+                            <tr>
 
-<tr><td>
+                                <td style="width:20%">
 
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
 
+                                </td>
 
-<table class="main" style="width:100%">
+                                <td colspan="3" style="width:80%">
 
+                                    Laboratory<input type="radio" name="type" value="laboratory">
 
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radiology<input type="radio" name="type" value="radiology">
 
-<tr>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other: <input type="text" name="other"
 
-<td style="width:20%">
+                                                                                      size="50" maxlength="50"/>
 
-<p class="bold">
+                                </td>
 
-Referral Type:</p> </td><td colspan="3" style="width:80%">Practice&nbsp;&nbsp;&nbsp;<input type="radio" name="type" value="practice">
+                            </tr>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physician<input type="radio" name="type" value="physician">
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dentist<input type="radio" name="type" value="dentist">
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hospital<input type="radio" name="type" value="hospital">
+                            <tr>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nurse<input type="radio" name="type" value="nurse">
+                                <td  style="width:20%">
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Administrator<input type="radio" name="type" value="administrator">
+                                    <p class="bold">
 
-</td>
+                                        Select Doctor to refer to:
 
-</tr>
+                                    </p> </td>
 
+                                <td colspan="3" style="width:80%">
 
+                                    Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<tr>
+                                    <select name="doctorname">
 
-<td style="width:20%">
+                                        <!--
+                                        
+                                        <option value="John Doe">John Smith</option>
+                                        
+                                        <option value="Jane Doe">Jane Smith</option>
+                                        
+                                        -->
 
-&nbsp;&nbsp;&nbsp;&nbsp;
+    <?php
+    echo $db->getDoctorsList($doctor_account_id, $rfrd_staff_id);
+    ?>
 
-</td>
+                                    </select>
 
-<td colspan="3" style="width:80%">
+                                </td>
 
-Laboratory<input type="radio" name="type" value="laboratory">
+                            </tr>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Radiology<input type="radio" name="type" value="radiology">
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other: <input type="text" name="other"
 
-size="50" maxlength="50"/>
+                            <tr>
 
-</td>
+                                <td style="width:20%">
 
-</tr>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
 
+                                </td>
 
+                                <td colspan="3" style="width:80%">
 
-<tr>
+                                    Specialty:
 
-<td  style="width:20%">
+                                    <select name="specialties">
 
-<p class="bold">
+                                        <!--  option value="orthopedic">Orthopedic</option>
+                                        
+                                        <option value="pediatrics">Pediatrics</option>
+                                        
+                                        <option value="opthomology">Opthomology</option>
+                                        
+                                        -->
 
-Select Doctor to refer to:
+    <?php
+    echo $db->getList('rf_spclty_type', 'spclty_type_cd', 'description', '9');
+    ?>
 
-</p> </td>
+                                    </select>
 
-<td colspan="3" style="width:80%">
+                                </td>
 
-Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </tr>
 
-<select name="doctorname">
 
-<!--
 
-<option value="John Doe">John Smith</option>
+                            <tr>
 
-<option value="Jane Doe">Jane Smith</option>
+                                <td  style="width:20%">
 
- -->
+                                    <p class="bold">
 
-<?php
+                                        Location:</p> </td>
 
-echo $db->getDoctorsList($doctor_account_id,$rfrd_staff_id);
+                                <td colspan="3" style="width:80%">
 
+                                    City:&nbsp;
 
+                                    <!--
+                                    
+                                    <select name="city">
+                                    
+                                    <option value="boyds">Boyds</option>
+                                    
+                                    <option value="germantown">Germantown</option>
+                                    
+                                    <option value="baltimore">Baltimore</option></select>
+                                    
+                                    -->
 
-?>
+                                    <input type="text" name="city" size="25" maxlength="25" value=""/>
 
-</select>
+                                </td>
 
-</td>
+                            </tr>
 
-</tr>
+                            <tr>
 
+                                <td  style="width:20%">
 
+                                    &nbsp;&nbsp;&nbsp;&nbsp; </td>
 
-<tr>
+                                <td colspan="3"style="width:80%">
 
-<td style="width:20%">
+                                    State&nbsp;
 
-&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <select name="state">
 
-</td>
+                                        <!--
+                                        
+                                        <option value="md">MD</option>
+                                        
+                                        <option value="va">VA</option>
+                                        
+                                        <option value="wv">WV</option>
+                                        
+                                        -->
 
-<td colspan="3" style="width:80%">
 
-Specialty:
 
-<select name="specialties">
+    <?php
+    echo $db->getList('rf_state', 'state_cd', 'state_descr', '');
+    ?>
 
-<!--  option value="orthopedic">Orthopedic</option>
+                                    </select>
 
-<option value="pediatrics">Pediatrics</option>
+                                </td>
 
-<option value="opthomology">Opthomology</option>
+                            </tr>
 
--->
 
-<?php
 
-echo $db->getList('rf_spclty_type','spclty_type_cd','description','9');
 
-?>
 
-</select>
+                            <tr>
 
-</td>
+                                <td  style="width:20%">
 
-</tr>
+                                    <p class="bold">
 
+                                        Select Patient:</p> </td>
 
+                                <td colspan="3" style="width:80%">
 
-<tr>
+                                    Name:&nbsp;
 
-<td  style="width:20%">
+                                    <select name="patientname">
 
-<p class="bold">
+                                        <!--
+                                       
+                                       <option value="John Doe">Rick Williams</option>
+                                       
+                                       <option value="Jane Doe">James Williams</option>
+                                       
+                                        -->
 
-Location:</p> </td>
+    <?php
+    echo $db->getPatientsList($doctor_account_id, $patient_id);
+    ?>
 
-<td colspan="3" style="width:80%">
+                                    </select>
 
-City:&nbsp;
+                                </td>
 
-<!--
+                            </tr>
 
-<select name="city">
 
-<option value="boyds">Boyds</option>
 
-<option value="germantown">Germantown</option>
+                            <tr>
 
-<option value="baltimore">Baltimore</option></select>
 
--->
 
-<input type="text" name="city" size="25" maxlength="25" value=""/>
+                                <td colspan="4" style="width:100%;">
 
-</td>
+                                    <table style="width:40%;" align="center"><tr>
 
-</tr>
+                                            <td style="width:50%;">
 
-<tr>
 
-<td  style="width:20%">
 
-&nbsp;&nbsp;&nbsp;&nbsp; </td>
+                                                <p> <input type="submit" name="action" value="Next" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
 
-<td colspan="3"style="width:80%">
+                                                </p>
 
-State&nbsp;
+                                            </td>
 
-<select name="state">
+                                            <td style="width:50%;">
 
-<!--
+                                                <p>
 
-<option value="md">MD</option>
+                                                    <input type="submit" name="action" value="Cancel" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
 
-<option value="va">VA</option>
+                                                </p>
 
-<option value="wv">WV</option>
+                                            </td>
 
- -->
 
 
+                                        </tr>
 
-<?php
+                                    </table>
 
-echo $db->getList('rf_state','state_cd','state_descr','');
+                                </td></tr>
 
 
 
-?>
 
-</select>
 
-</td>
+                        </table>
 
-</tr>
+                    </td></tr></table>
 
 
 
+        </td>
 
+    </tr>
 
-<tr>
 
-<td  style="width:20%">
 
-<p class="bold">
 
-Select Patient:</p> </td>
 
-<td colspan="3" style="width:80%">
+    <?php
+    include( "footer.php");
+    ?>
 
-Name:&nbsp;
 
- <select name="patientname">
 
- <!--
+    </table>
 
-<option value="John Doe">Rick Williams</option>
 
-<option value="Jane Doe">James Williams</option>
 
- -->
+    </form>
 
-<?php
+    </body>
 
-echo $db->getPatientsList($doctor_account_id,$patient_id);
+    </html>
 
-
-
-?>
-
-</select>
-
-</td>
-
-</tr>
-
-
-
-<tr>
-
-
-
-<td colspan="4" style="width:100%;">
-
-<table style="width:40%;" align="center"><tr>
-
-<td style="width:50%;">
-
-
-
-<p> <input type="submit" name="action" value="Next" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
-
-</p>
-
-</td>
-
-<td style="width:50%;">
-
-<p>
-
-<input type="submit" name="action" value="Cancel" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
-
-</p>
-
-</td>
-
-
-
-</tr>
-
-</table>
-
-</td></tr>
-
-
-
-
-
-</table>
-
-</td></tr></table>
-
-
-
-</td>
-
-</tr>
-
-
-
-
-
-	<?php
-
- 	include( "footer.php");
-
- ?>
-
-
-
-</table>
-
-
-
-</form>
-
-</body>
-
-</html>
-
-<?php
-
-mysql_close($con);
-
+    <?php
+    mysql_close($con);
 } else {
 
 
 
-	if(isset($_POST['action']))
+    if (isset($_POST['action'])) {
 
-	{
+        $doctor_account_id = $_SESSION['staff_account_id'];
+        $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
+        if (!$con) {
 
-		$doctor_account_id=$_SESSION['staff_account_id'];
-
-
-
-	$con = mysql_connect("localhost","linuxwin_testing","LeV%pxVhK~d@");
-
-		if (!$con)
-
-		{
-
-			die('Could not connect: ' . mysql_error());
-
-		}
+            die('Could not connect: ' . mysql_error());
+        }
 
 
 
-		mysql_select_db("prijal_healthmd", $con);
+        mysql_select_db($_SESSION['databaseName'], $con);
 
-		$result = mysql_query("SELECT staff_id FROM  org_staff WHERE account_id = '$doctor_account_id'");
+        $result = mysql_query("SELECT staff_id FROM  org_staff WHERE account_id = '$doctor_account_id'");
 
-		$row = mysql_fetch_assoc($result);
+        $row = mysql_fetch_assoc($result);
 
-		$staff_id=$row['staff_id'];
+        $staff_id = $row['staff_id'];
 
-		if( $_POST['action']=='Next'){
+        if ($_POST['action'] == 'Next') {
 
-			$referral_type = $_POST['type'];
+            $referral_type = $_POST['type'];
 
-			$refer_to = $_POST['doctorname'];
+            $refer_to = $_POST['doctorname'];
 
-			$patient=$_POST['patientname'];
+            $patient = $_POST['patientname'];
 
 
 
 
 
-			mysql_query("INSERT INTO dr_patient_refrl (referral_id,staff_id,patient_id, rfrd_staff_id)
+            mysql_query("INSERT INTO dr_patient_refrl (referral_id,staff_id,patient_id, rfrd_staff_id)
 
 					VALUES (0,'$staff_id','$patient','$refer_to')");
 
 
 
-			$result = mysql_query("SELECT max(referral_id) FROM  dr_patient_refrl WHERE staff_id = '$staff_id'");
+            $result = mysql_query("SELECT max(referral_id) FROM  dr_patient_refrl WHERE staff_id = '$staff_id'");
 
-			$row = mysql_fetch_assoc($result);
+            $row = mysql_fetch_assoc($result);
 
-			$last_referral_id=$row['max(referral_id)'];
+            $last_referral_id = $row['max(referral_id)'];
 
-			$_SESSION['last_referral_id'] =$last_referral_id;
+            $_SESSION['last_referral_id'] = $last_referral_id;
 
-				mysql_close($con);
+            mysql_close($con);
 
-			$nextpage='newreferralpage2a.php';
+            $nextpage = 'newreferralpage2a.php';
+        } else if ($_POST['action'] == 'Cancel')
+            $nextpage = 'maind.php';
+    }
 
-		}else if( $_POST['action']=='Cancel')
+    header("location:" . $nextpage);
 
-			$nextpage='maind.php';
-
-	}
-
-	header("location:".$nextpage);
-
-	exit;
-
+    exit;
 }
-
 ?>

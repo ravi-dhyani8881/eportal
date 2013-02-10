@@ -4,7 +4,7 @@ class DB {
 
     private $db_name = 'prijal';
     private $db_user = 'root';
-    private $db_pass = '';
+    private $db_pass = 'root';
     private $db_host = 'localhost';
 
     function get_db_name() {

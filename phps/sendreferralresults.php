@@ -10,13 +10,13 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
  	include( "navigationd.php");
 
  	// get referral info from db
-	 $con = mysql_connect("localhost","root");
+	 $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
 	 if (!$con)
 	 	{
 	 		die('Could not connect: ' . mysql_error());
 	 	}
 
-	 	mysql_select_db("prijal_healthmd", $con);
+	 	mysql_select_db($_SESSION['databaseName'], $con);
 	 	$referral_id=$_SESSION['referral_id'];
 	 	$result = mysql_query("SELECT staff_id,patient_id,tests_to_perform_txt,
 	 		spcl_inst_txt, other_comments_txt

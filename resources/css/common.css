@@ -1,0 +1,31 @@
+/* 
+    Document   : common
+    Created on : Feb 9, 2013, 11:19:26 AM
+    Author     : ravi
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   
+*/
+input.watermark { color: #999; }
+input {
+    padding:4px;
+}
+
+
+#notifications {
+    background: none repeat scroll 0 0 grey;
+    height: 75px;
+    left: 0;
+    opacity: 0.9;
+    overflow: visible;
+    position: fixed;
+    text-align: center;
+    font-size: 25px;
+    top: 0;
+    width: 100%;
+    z-index: 10000;
+}
