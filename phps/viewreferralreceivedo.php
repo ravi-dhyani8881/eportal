@@ -22,8 +22,8 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 <table style="margin: 40px 40px 285px;width:800px;
 top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
-<tr><td>
-
+                 <tr><td>
+        
                         <table style="float: left;    margin-left: -3px;    width: 104%;">
                             <tr><td >
 
@@ -33,6 +33,8 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
                         </table>
                     </td>
                 </tr>
+                
+                
 <tr><td>
 <table class="main" style="width:100%;">
 <!--

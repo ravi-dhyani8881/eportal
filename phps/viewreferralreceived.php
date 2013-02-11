@@ -4,14 +4,9 @@ require_once '../includes/global.inc.php';
 
 if (!isset($_POST['action'])) { // if page is not submitted to itself echo the form
 
-
-
  	include( "header.php");
 
  ?>
-
-
-
 <tr>
 
 <td style="background-color:white;height:600px;width:300px;vertical-align:middle;">
@@ -42,30 +37,14 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
 
-<table style="margin:40px;width:800px;position: absolute;
+<table style="margin:40px;width:800px;margin: 40px 40px 345px;
 top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
-<tr><td>
+ <tr><td >
 
+                                    <span class="left-box"></span><span class="cent-box" style="width:786px;">View Referral Received </span><span class="right-box"></span>
 
-
-<table class="header" style="width:100%">
-
-<tr><td >
-
-
-
-View Referral Received
-
-
-
-</td></tr>
-
-</table>
-
-</td>
-
-</tr>
+                                </td></tr>
 
 <tr><td>
 
