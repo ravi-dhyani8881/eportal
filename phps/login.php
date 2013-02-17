@@ -206,6 +206,8 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                     $_SESSION['staff_id'] = $staff_id;
                     $_SESSION['staff_account_id'] = $account_id;
                     $_SESSION['login_type'] = 'staff';
+                    $_SESSION['dlogin'] = 'login';
+                    $_SESSION['llogin'] = 'true';
 
                    header("Location:../phps/doctorprofile.php");
                     //   $nextpage = 'maind.php';
@@ -216,12 +218,16 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                     $_SESSION['patient_id'] = $patient_id;
                     $_SESSION['patient_account_id'] = $account_id;
                     $_SESSION['login_type'] = 'patient';
+                    $_SESSION['plogin'] = 'login';
+                    $_SESSION['llogin'] = 'true';
                     header("Location:../phps/patientprofile.php");
                     //  $nextpage = 'mainp.php';
                 } else if ($account_type == 'organization') {
                     $_SESSION['org_account_id'] = $account_id;
                     $_SESSION['login_type'] = 'organization';
-
+                    $_SESSION['staff_account_id'] = $account_id;
+                    $_SESSION['ologin'] = 'login';
+                    $_SESSION['llogin'] = 'true';
                     header("Location:../phps/organizationprofile.php");
 
                     //   $nextpage = 'organizationprofile.php';

@@ -203,7 +203,7 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 			$_SESSION['patient_account_id']=$_POST['dv_account_id'];
 
-			$nextpage='patientprofile.php';
+			$nextpage='doctorpatientprofile.php';
 
 
 

@@ -212,10 +212,7 @@ Notification Preference:&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="ra
 
 <td colspan="4" style="width:100%;">
 <table style="width:60%;" align="center"><tr>
-<td style="width:33%;">
-<p> <input type="submit" name="action" value="Change Password" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 140px"/>
-</p>
-</td>
+
 <td style="width:33%;">
 <p> &nbsp; &nbsp; &nbsp;<input type="submit" name="action" value="Save" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
 </p>

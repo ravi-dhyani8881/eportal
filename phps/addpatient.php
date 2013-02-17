@@ -113,17 +113,14 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
         <td style="background-color:white;height:600px;width:900px;text-align:top;">
 
-            <table style="margin:40px;width:800px;position: absolute;
+            <table style="margin:40px;width:800px;
                    top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
-                <tr><td>
-                        <table class="header" style="width:100%">
-                            <tr><td>
-                                    Patient Information
+                 <tr><td >
+
+                                    <span class="left-box"></span><span class="cent-box" style="width:786px;">Patient Information </span><span class="right-box"></span>
+
                                 </td></tr>
-                        </table>
-                    </td>
-                </tr>
 
                 <tr><td>
 

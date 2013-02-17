@@ -19,7 +19,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 </td>
 <td style="background-color:white;height:600px;width:900px;text-align:top;">
 
-<table style="margin: 40px 40px 285px;width:800px;
+<table style="margin: 40px 40px 345px;width:800px;
 top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
                  <tr><td>

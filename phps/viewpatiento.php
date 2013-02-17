@@ -6,7 +6,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
 
- 	include( "header.php");
+  include( "header.php");
 
  ?>
 
@@ -14,15 +14,15 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 <td style="background-color:white;height:600px;width:300px;vertical-align:middle;">
 
-	<?php
+<?php
 
- 	include( "navigationo.php");
+  include( "navigationo.php");
 
- //	$account_id=$_SESSION['account_id'];
+ // $account_id=$_SESSION['account_id'];
 
- 	$account_id=$_SESSION['staff_account_id'];
+  $account_id=$_SESSION['staff_account_id'];
 
- 	$result=$db->selectPatients($account_id);
+  $result=$db->selectPatients($account_id);
 
 
 
@@ -34,20 +34,20 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
 
-<table style="margin:40px;width:800px;  margin: 40px 40px 350px;
+<table style="margin:40px;width:800px; margin: 40px 40px 350px;
 top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 <tr><td>
 
-                        <table style="float: left;    margin-left: -3px;    width: 104%;">
-                            <tr><td >
+<table style="float: left; margin-left: -3px; width: 104%;">
+<tr><td >
 
-                                    <span class="left-box"></span><span class="cent-box" style="width:786px;"> View Patients</span><span class="right-box"></span>
+<span class="left-box"></span><span class="cent-box" style="width:786px;"> View Patients</span><span class="right-box"></span>
 
-                                </td></tr>
-                        </table>
-                    </td>
-                </tr>
+</td></tr>
+</table>
+</td>
+</tr>
 
 <tr><td>
 
@@ -61,7 +61,7 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 <td><p>
 
-<table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="0" 	>
+<table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="0" >
 
 <tr class="bold">
 
@@ -87,13 +87,13 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 </tr>
 
- -->
+-->
 
 <tr >
 
 <td><p>
 
-<table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="0" 	>
+<table style="width:100%;border-collapse:collapse" border="1" cellspacing="0" cellpadding="0" >
 
 <tr class="bold">
 
@@ -107,29 +107,29 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
  while($row = mysql_fetch_array($result)){
 
- 	echo "<tr>";
+  echo "<tr>";
 
- 	echo "<td>" . $row['last_name'] . "</td>";
+  echo "<td>" . $row['last_name'] . "</td>";
 
- 	echo "<td>" . $row['first_name'] . "</td>";
+  echo "<td>" . $row['first_name'] . "</td>";
 
- 	echo "<td>" . $row['email_address'] . "</td>";
+  echo "<td>" . $row['email_address'] . "</td>";
 
- 	echo "<td>" . $row['work_phone'] . "</td>";
+  echo "<td>" . $row['work_phone'] . "</td>";
 
- 	echo "<td>" . $row['cell_phone'] . "</td>";
+  echo "<td>" . $row['cell_phone'] . "</td>";
 
- 	echo "<td>" . $row['addr_street1'] . "</td>";
+  echo "<td>" . $row['addr_street1'] . "</td>";
 
- 	echo "<td>" . $row['addr_city'] . "</td>";
+  echo "<td>" . $row['addr_city'] . "</td>";
 
- 	echo "<td>" . $row['addr_state'] . "</td>";
+  echo "<td>" . $row['addr_state'] . "</td>";
 
- 	echo "<td>" . $row['zip_cd'] . "</td>";
+  echo "<td>" . $row['zip_cd'] . "</td>";
 
- 	echo "<td><input type=\"radio\" name=\"dv_account_id\" value=\"" . $row['account_id']. "\"><td>";
+  echo "<td><input type=\"radio\" name=\"dv_account_id\" value=\"" . $row['account_id']. "\"><td>";
 
- 	echo "</tr>";
+  echo "</tr>";
 
  }
 
@@ -175,9 +175,9 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 
 
-	<?php
+<?php
 
- 	include( "footer.php");
+  include( "footer.php");
 
  ?>
 
@@ -197,31 +197,31 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 
 
-	if(isset($_POST['action']))
+if(isset($_POST['action']))
 
-	{
+{
 
-		if( $_POST['action']=='View Details'){
+if( $_POST['action']=='View Details'){
 
-		//	$_SESSION['doctor_view_patients']="Y";
+// $_SESSION['doctor_view_patients']="Y";
 
-		//	$_SESSION['dv_account_id']=$_POST['dv_account_id'];
+// $_SESSION['dv_account_id']=$_POST['dv_account_id'];
 
-			$_SESSION['patient_account_id']=$_POST['dv_account_id'];
+$_SESSION['patient_account_id']=$_POST['dv_account_id'];
 
-			$nextpage='patientprofile.php';
+$nextpage='patientprofile.php';
 
 
 
-		}else if( $_POST['action']=='Cancel')
+}else if( $_POST['action']=='Cancel')
 
-			$nextpage='maind.php';
+$nextpage='maind.php';
 
-	}
+}
 
-	header("location:".$nextpage);
+header("location:".$nextpage);
 
-	exit;
+exit;
 
 }
 

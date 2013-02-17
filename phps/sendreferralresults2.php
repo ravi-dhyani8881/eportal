@@ -9,20 +9,23 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 	<?php
  	include( "navigationd.php");
  ?>
+    <script>
+$(function() {
+$( "#datepicker" ).datepicker();
+});
+</script>
+    
 </td>
 <td style="background-color:white;height:600px;width:900px;text-align:top;">
 <table style="margin:40px;width:800px" cellpadding="0px" cellspacing="0px;" >
-<tr><td>
 
-<table class="header" style="width:100%">
-<tr><td >
+    
+    <tr><td >
 
-Send Referral Results
+                                    <span class="left-box"></span><span class="cent-box" style="width:786px;">Send Referral Results </span><span class="right-box"></span>
 
-</td></tr>
-</table>
-</td>
-</tr>
+                                </td></tr>
+
 <tr><td>
 
 <table class="main" style="width:100%">
@@ -32,7 +35,7 @@ Send Referral Results
 <td  style="width:20%">
 <p class="bold">
 Select Referral:</p> </td>
-<td colspan="3" style="width:80%">
+<td colspan="3" style="width:80%; padding: 10px 0 5px 13px;">
 <select name="doctorsname">
 <option value="John Doe">John smith</option>
 <option value="Jane Doe">Jane smith</option>
@@ -73,7 +76,7 @@ Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="te
 Gender:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="gender" size="10" maxlength="10" />
 </td>
 <td style="width:50%">
-Date of Birth: <input type="text" name="dob" size="10" maxlength="dob" />
+Date of Birth: <input type="text" name="dob" id="datepicker"  />
 </td>
 </tr>
 <tr>
@@ -121,14 +124,22 @@ Recommended Treatment:</p> </td>
 </textarea>
 </td>
 </tr>
+
+<tr>
+<td  style="width:20%;  vertical-align:top">
+<p class="bold">
+Attached files:</p> </td>
+<td colspan="3" style="width:80%">
+<input type="file" name="fuplod" value="" />
+</textarea>
+</td>
+</tr>
+
 <tr>
 
-<td colspan="4" style="width:100%;">
+<td colspan="4" style="width:100%; padding: 10px 0 5px;">
 <table style="width:80%;" align="center"><tr>
-<td style="width:25%;">
-<p> <input type="submit" name="action" value="Attach Files" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
-</p>
-</td>
+
 <td style="width:25%;">
 <p> <input type="submit" name="action" value="Send Now" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
 </p>
