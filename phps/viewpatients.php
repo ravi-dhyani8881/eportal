@@ -91,16 +91,16 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 <tr class="bold">
 
-<td>Last Name</td><td>First Name</td><td>Email</td><td>work</td><td>cell</td><td>street</td><td>city</td><td>state</td><td>zip</td><td>Select</td></tr>
+<td>Last Name</td><td>First Name</td><td>Email</td><td>work</td><td>cell</td><td>city</td><td>Select</td></tr>
 
 <?php
 
  $num = mysql_num_rows($result);
 
- //echo "Num of rows: $num";
-
+ echo "Num of rows: $num";
+ 
  while($row = mysql_fetch_array($result)){
-
+     
  	echo "<tr>";
 
  	echo "<td>" . $row['last_name'] . "</td>";
@@ -113,13 +113,8 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
  	echo "<td>" . $row['cell_phone'] . "</td>";
 
- 	echo "<td>" . $row['addr_street1'] . "</td>";
-
  	echo "<td>" . $row['addr_city'] . "</td>";
 
- 	echo "<td>" . $row['addr_state'] . "</td>";
-
- 	echo "<td>" . $row['zip_cd'] . "</td>";
 
  	echo "<td><input type=\"radio\" name=\"dv_account_id\" value=\"" . $row['account_id']. "\"><td>";
 

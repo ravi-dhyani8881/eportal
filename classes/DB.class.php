@@ -205,7 +205,7 @@ class DB {
         $staff_id = $row['staff_id'];
 
         $sql = "SELECT patient.account_id,patient.patient_id,patient.last_name,patient.first_name,
-                                                               patient.email_address,address.work_phone,address.cell_phone,address.addr_street1,address.addr_city,
+                                                               patient.email_address, patient.work_phone,patient.cell_phone,address.addr_street1,patient.addr_city,
                                                                address.addr_state,address.zip_cd, address.address_id
                                                                FROM patient left outer join address on patient.account_id=address.address_id
                                                                where  patient.patient_id in (SELECT patient_id from doctor_patient where staff_id='$staff_id')";
