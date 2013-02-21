@@ -17,6 +17,20 @@ jQuery(function($){
     }   
 });
 </script>
+
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            
+              $('#fsubmit').click(function() {
+                var username = $('#firstname').val();
+                
+                var u=username.length;
+                if (username == ""){ alert("Please Insert Username"); $("#firstname").css("border","1px solid red"); return false; }
+                if (u <= 3 ){ alert("Username Must Be 4 Character"); $("#firstname").css("border","1px solid red"); return false; }
+                });
+      });
+    </script>
 <span class="notifications" id="notifications" style="display: none;" >		
 		<p>Your settings have been updated successfully.</p>
 		</span>
@@ -111,7 +125,7 @@ size="35" maxlength="35" />
 
 <td style="width:10%">
 First Name:
-</td> <td style="width:40%"><input type="text" name="firstname"  value="<?php echo $firstname;?>"
+</td> <td style="width:40%"><input type="text" name="firstname" id="firstname" value="<?php echo $firstname;?>"
 size="35" maxlength="35"/>
 </td>
 
@@ -214,7 +228,7 @@ Notification Preference:&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="ra
 <table style="width:60%;" align="center"><tr>
 
 <td style="width:33%;">
-<p> &nbsp; &nbsp; &nbsp;<input type="submit" name="action" value="Save" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
+<p> &nbsp; &nbsp; &nbsp;<input type="submit" id="fsubmit" name="action" value="Save" style="background-color: #4682B4;border-radius:5px;height: 35px; width: 100px"/>
 </p>
 </td>
 <td style="width:33%;">
