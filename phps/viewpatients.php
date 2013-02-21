@@ -97,18 +97,18 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
  $num = mysql_num_rows($result);
 
- echo "Num of rows: $num";
+
  
  while($row = mysql_fetch_array($result)){
      
  	echo "<tr>";
-
+         
  	echo "<td>" . $row['last_name'] . "</td>";
 
  	echo "<td>" . $row['first_name'] . "</td>";
 
  	echo "<td>" . $row['email_address'] . "</td>";
-
+                      
  	echo "<td>" . $row['work_phone'] . "</td>";
 
  	echo "<td>" . $row['cell_phone'] . "</td>";
@@ -116,7 +116,7 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
  	echo "<td>" . $row['addr_city'] . "</td>";
 
 
- 	echo "<td><input type=\"radio\" name=\"dv_account_id\" value=\"" . $row['account_id']. "\"><td>";
+ 	echo "<td><input type=\"radio\" name=\"dv_account_id\" checked=\"checked\" value=\"" . $row['account_id']. "\"><td>";
 
  	echo "</tr>";
 
