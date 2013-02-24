@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/global.inc.php';
-
+include( "doctorSession.php");
 
 if (!isset($_POST['action'])) { // if page is not submitted to itself echo the form
 
@@ -23,12 +23,37 @@ jQuery(function($){
         $(document).ready(function() {
             
               $('#fsubmit').click(function() {
-                var username = $('#firstname').val();
                 
-                var u=username.length;
-                if (username == ""){ alert("Please Insert Username"); $("#firstname").css("border","1px solid red"); return false; }
-                if (u <= 3 ){ alert("Username Must Be 4 Character"); $("#firstname").css("border","1px solid red"); return false; }
+                
+                if ($('#firstname').val() == ""){ jAlert("Please Insert Firstname"  , 'Error Message'); $("#firstname").css("border","1px solid red"); return false; }
+                if ($('#lastname').val() == ""){ jAlert("Please Insert Lastname"  , 'Error Message'); $("#lastname").css("border","1px solid red"); return false; }                
+                if ($('#email').val() == ""){ jAlert("Please Insert Email id"  , 'Error Message'); $("#email").css("border","1px solid red"); return false; }            
+                
+                
+                if ($('#cell').val().length <= 13 ){ jAlert('Invalid Cellphone Number' , 'Error Message'); $("#cell").css("border","1px solid red"); return false; }                
+                if ($('#firstname').val().length <= 3 ){ jAlert("Firstname Must Be 4 Character"  , 'Error Message'); $("#firstname").css("border","1px solid red"); return false; }
                 });
+                
+              $("#email").keyup(function(){
+                var username = $('#email').val();
+                var u=username.length;		
+                if (u >= 2 ){
+                    $.post("checkEmailExist.php?email="+username+'&method=checkmail', function(data) { 
+        			
+                         if (data==0){
+                            $("#resultt" ).empty().append("Email not Registered");
+                            $("#resultt").css("color","green");
+                            $('input[type="submit"]').removeAttr('disabled');
+                        } else {
+                            $("#resultt" ).empty().append("Email Already Register");
+                            $("#resultt").css("color","red");        					 
+                            $('input[type="submit"]').attr('disabled','disabled');        					
+                        }   			
+                    });
+                }
+        			
+            }); 
+                
       });
     </script>
 <span class="notifications" id="notifications" style="display: none;" >		
@@ -49,7 +74,7 @@ jQuery(function($){
  	mysql_select_db($_SESSION['databaseName'], $con);
  //	$account_id=$_SESSION['account_id'];
  	$account_id=$_SESSION['staff_account_id'];
- 	$result = mysql_query("SELECT spclty_type_cd,last_name,first_name,email_address,work_phone,cell_phone, org_name , middle_name ,gender
+ 	$result = mysql_query("SELECT spclty_type_cd,last_name,first_name,email_address,work_phone,cell_phone, org_name , middle_name ,gender , NOTIFICATION_PRE
  		FROM  org_staff WHERE account_id = '$account_id'");
  	$row = mysql_fetch_assoc($result);
  	
@@ -64,6 +89,9 @@ jQuery(function($){
  	$work=$row['work_phone'];
         $cell=$row['cell_phone'];
  	$org_name = $row['org_name'];
+        $nPrefrence = $row['NOTIFICATION_PRE'];
+        
+        
  	//echo "Org name is ---  $org_name";
 
 
@@ -119,7 +147,7 @@ size="50" maxlength="50" />
 -->
 </tr>
 <tr><td style="width:10%">
-Last Name:</td><td style="width:40%;"> <input type="text" name="lastname"  value="<?php echo $lastname;?>"
+Last Name:</td><td style="width:40%;"> <input type="text" name="lastname" id="lastname"  value="<?php echo $lastname;?>"
 size="35" maxlength="35" />
 </td>
 
@@ -131,7 +159,7 @@ size="35" maxlength="35"/>
 
 </tr>
 
-<tr><td style="width:10%">
+<tr><td style="width:13%">
 Middle Name:</td><td style="width:40%;"> <input type="text" name="middlename" value="<?php echo $row['middle_name'];?>"
 size="35" maxlength="35" />
 </td>
@@ -145,20 +173,22 @@ Gender: </td>
 <td colspan="3" style="width:90%">
     <?php
     if($row['gender']=='M'){
-        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
-        echo 'Male<input type="radio" checked="true" style="width:0px;" name="gender" value="M">';       
+        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
+        echo 'Male<input type="radio" checked="true" style="width:0px;" name="gender" id="gender" value="M">';       
     } elseif ($row['gender']=='F') {
-         echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" checked="true" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
-        echo 'Male<input type="radio" style="width:0px;"  name="gender" value="M">';     
+         echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" checked="true" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
+        echo 'Male<input type="radio" style="width:0px;"  name="gender" id="gender" value="M">';     
     }else{
-         echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
-        echo 'Male<input type="radio"  name="gender" style="width:0px;" value="M">';     
+         echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';        
+        echo 'Male<input type="radio"  name="gender" style="width:0px;" id="gender" value="M">';     
     }
     ?>
     
 </td>
 
 </tr>
+
+
 
 <tr>
 
@@ -193,8 +223,8 @@ Phone Number(s)
 
 <table style="width:70%">
 <tr>
-<td style="width:10%">
-    Work:</td> <td style="width:40%"><input type="text" id="work" name="work" style="width: 150px;"    value="<?php echo $work;?>"
+<td style="width:10% ">
+    Work:</td> <td style="width:40%; padding: 0 0 0 12px;"><input type="text" id="work" name="work" style="width: 150px;"    value="<?php echo $work;?>"
 size="30" maxlength="30" />
 </td>
 <td style="width:10%">
@@ -204,18 +234,30 @@ size="15" maxlength="15"/>
 </tr>
 <tr><td  style="width:10%">
 <p>
-Email:</p></td> <td colspan="3" style="width:90%"><p><input type="text" name="email"  size="75" maxlength="75"
- value="<?php echo $email;?>"
-/>
-</p>
+Email:</p></td> <td colspan="3" style="width:90%"><p><input type="text" name="email" id="email"  size="75" maxlength="75" value="<?php echo $email;?>"/>
+           <span id="resultt" style="font-weight:bold;"></span>     
+        </p>
 </td>
 
 </tr>
 <tr>
 
 <td colspan="4">
-Notification Preference:&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" name="notifypref" value="email">
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" name="notifypref" value="text">
+Notification Preference:
+
+	 <?php
+    if($row['NOTIFICATION_PRE']=='E'){
+        echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" checked="true" name="notifypref" value="E">';        
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" id="notifypref" name="notifypref" value="T">';       
+    } elseif ($row['NOTIFICATION_PRE']=='T') {
+        echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" name="notifypref" value="E">';        
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" checked="true" id="notifypref" name="notifypref" value="T">';       
+    }else{
+        echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref"  name="notifypref" value="E">';        
+        echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" id="notifypref" name="notifypref" value="T">';       
+    }
+    ?>
+
 </td>
 </tr>
 </table>
@@ -283,6 +325,7 @@ mysql_close($con);
 			$cell=$_POST['cell'];
 			$org_name = $_POST['org_name'];
                         $gender = $_POST['gender'];
+                        $notify = $_POST['notifypref'];
                         
 
                         $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
@@ -306,15 +349,15 @@ mysql_close($con);
 			if($num_rows==0){
 
 				mysql_query("INSERT INTO org_staff (staff_id,account_id,org_name,spclty_type_cd,last_name,
-					first_name,email_address,work_phone,cell_phone , middle_name )
-					VALUES (0,'$account_id','$neworg_name',$specialties,'$lastname','$firstname','$email','$work','$cell','$middleName')");
+					first_name,email_address,work_phone,cell_phone , middle_name , NOTIFICATION_PRE )
+					VALUES (0,'$account_id','$neworg_name',$specialties,'$lastname','$firstname','$email','$work','$cell','$middleName' , '$notify')");
 
 
 			}else	{
 
 				mysql_query("UPDATE org_staff SET spclty_type_cd='$specialties', org_name='$neworg_name',
 				last_name='$lastname',first_name='$firstname',email_address='$email',
-				work_phone='$work',cell_phone='$cell', gender='$gender' , middle_name='$middleName' WHERE account_id = '$account_id'");
+				work_phone='$work',cell_phone='$cell', gender='$gender' , middle_name='$middleName',NOTIFICATION_PRE='$notify'  WHERE account_id = '$account_id'");
 
 			}
 			$result = mysql_query("SELECT staff_id FROM  org_staff WHERE account_id = '$account_id'");

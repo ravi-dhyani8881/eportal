@@ -103,6 +103,7 @@ class DB {
 
     public function getList($table, $field_cd, $field_descr, $val) {
         $options = "";
+        
         $sql = "SELECT $field_cd,$field_descr FROM $table";
         $result = mysql_query($sql);
         while ($row = mysql_fetch_array($result)) {
@@ -117,6 +118,8 @@ class DB {
 
         return "$options";
     }
+    
+    
 
     public function getListDescr($table, $field_cd, $field_descr, $val) {
         $options = "";
@@ -221,14 +224,14 @@ class DB {
         $staff_id = $row['staff_id'];
         if ($status_cd == 3) {
             $result = mysql_query("SELECT dr_patient_refrl.referral_id, dr_patient_refrl.rfrng_date, patient.last_name,patient.first_name,
-						patient.gender_cd,patient.date_of_birth, rf_rfrl_status.description, org_staff.last_name as ln,org_staff.first_name as fn
+						patient.GENDER_REPLACE,patient.date_of_birth, rf_rfrl_status.description, org_staff.last_name as ln,org_staff.first_name as fn
 						from  dr_patient_refrl left outer join patient on dr_patient_refrl.patient_id=patient.patient_id
 						left outer join rf_rfrl_status on  dr_patient_refrl.rfrd_status_cd=rf_rfrl_status.rfrl_status_cd
 						left outer join org_staff on dr_patient_refrl.staff_id= org_staff.staff_id
 						where dr_patient_refrl.rfrd_staff_id='$staff_id' and dr_patient_refrl.rfrd_status_cd='$status_cd'");
         } else {
             $result = mysql_query("SELECT dr_patient_refrl.referral_id, dr_patient_refrl.rfrng_date, patient.last_name,patient.first_name,
-					patient.gender_cd,patient.date_of_birth, rf_rfrl_status.description, org_staff.last_name as ln,org_staff.first_name as fn
+					patient.GENDER_REPLACE,patient.date_of_birth, rf_rfrl_status.description, org_staff.last_name as ln,org_staff.first_name as fn
 					from  dr_patient_refrl left outer join patient on dr_patient_refrl.patient_id=patient.patient_id
 					left outer join rf_rfrl_status on  dr_patient_refrl.rfrng_status_cd=rf_rfrl_status.rfrl_status_cd
 					left outer join org_staff on dr_patient_refrl.rfrd_staff_id= org_staff.staff_id

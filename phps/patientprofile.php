@@ -14,7 +14,57 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                 $('#notifications').slideUp(4000).delay(25000);
             }   
         });
+                                                    
+        function validEmail(email) {
+            return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i.test(email);
+        }
     </script>
+
+    <script type="text/javascript">
+
+        $(function() {
+            $( "#datepicker" ).datepicker();
+        });                            
+
+
+        $(document).ready(function() {                    
+            $('#fsubmit').click(function() {
+                                                        
+                if( validEmail($('#email').val()) ){                
+                } else{ 
+                    jAlert("Invalid email Address" ,'Error Message'); $("#email").css("border","1px solid red"); return false;                
+                };           
+                                                                    
+                if ($('#firstname').val() == ""){ jAlert("Please Insert Firstname" , 'Error Message' ); $("#firstname").css("border","1px solid red"); return false; }
+                if ($('#lastname').val() == ""){ jAlert("Please Insert Lastname" , 'Error Message'); $("#lastname").css("border","1px solid red"); return false; }                
+                if ($('#email').val() == ""){ alert("Please Insert Email id" , 'Error Message'); $("#email").css("border","1px solid red"); return false; }            
+                if ($('#cell').val().length <= 13 ){ jAlert("Invalid Cellphone Number" ,'Error Message'); $("#cell").css("border","1px solid red"); return false; }                
+                if ($('#firstname').val().length <= 3 ){ jAlert("Firstname Must Be 4 Character" , 'Error Message'); $("#firstname").css("border","1px solid red"); return false; }
+                                                                   
+            });
+                                                    
+                                                    
+            $("#email").keyup(function(){
+                var username = $('#email').val();
+                var u=username.length;		
+                if (u >= 2 ){
+                    $.post("checkEmailExist.php?email="+username+'&method=checkmailPatient', function(data) {                 			
+                        if (data==0){
+                            $("#resultt" ).empty().append("Email not Registered");
+                            $("#resultt").css("color","green");
+                            $('input[type="submit"]').removeAttr('disabled');
+                        } else {
+                            $("#resultt" ).empty().append("Email Already Register");
+                            $("#resultt").css("color","red");        					 
+                            $('input[type="submit"]').attr('disabled','disabled');        					
+                        }       			
+                    });
+                }
+                                                    			
+            }); 
+        });        
+    </script>
+
     <span class="notifications" id="notifications" style="display: none;" >		
         <p>Your settings have been updated successfully.</p>
     </span>
@@ -23,8 +73,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
     <tr>
         <td style="background-color:#F7F7F7;height:600px;width:300px;vertical-align:top; border: 1px solid #C3CFD9; box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);">
             <?php
-            
-                include( "navigationp.php");
+            include( "navigationp.php");
             $con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
             if (!$con) {
                 die('Could not connect: ' . mysql_error());
@@ -37,7 +86,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
             //	}
             $account_id = $_SESSION['patient_account_id'];
             $result = mysql_query("SELECT last_name,first_name,email_address , middle_name ,ADDR_street1 ,
-                    ADDR_CITY  , ADDR_STATE ,ZIP_CD , WORK_PHONE , CELL_PHONE FROM  patient WHERE account_id = '$account_id'");
+                    ADDR_CITY  , ADDR_STATE ,ZIP_CD , WORK_PHONE , CELL_PHONE , GENDER_REPLACE , NOTIFICATION_PRE , DATE_OF_BIRTH FROM  patient WHERE account_id = '$account_id'");
             $row = mysql_fetch_assoc($result);
             $lastname = $row['last_name'];
             $firstname = $row['first_name'];
@@ -51,6 +100,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
             $zip = $row['ZIP_CD'];
             $work = $row['WORK_PHONE'];
             $cell = $row['CELL_PHONE'];
+            $dateof = $row['DATE_OF_BIRTH'];
             ?>
         </td>
         <td style="background-color:white;height:600px;width:900px;text-align:top;">
@@ -78,13 +128,13 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                 </td>
                             </tr>
                             <tr><td style="width:18%;  padding-left: 22px;">
-                                    Last Name:</td><td style="width:40%;"> <input type="text" name="lastname" value="<?php echo $lastname; ?>"
+                                    Last Name:</td><td style="width:40%;"> <input type="text" name="lastname" id="lastname" value="<?php echo $lastname; ?>"
                                                                               size="35" maxlength="35" />
                                 </td>
 
-                                <td style="width:10%">
+                                <td style="width:15%">
                                     First Name:
-                                </td> <td style="width:40%"><input type="text" name="firstname" value="<?php echo $firstname; ?>"
+                                </td> <td style="width:40%"><input type="text" name="firstname" id="firstname" value="<?php echo $firstname; ?>"
                                                                    size="35" maxlength="35"/>
                                 </td>
 
@@ -98,11 +148,32 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                             <tr>
 
                                 <td style="width:18%;  padding-left: 22px;">
-                                    Gender: </td><td colspan="3" style="width:90%">Female&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" value="0">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Male<input type="radio" name="gender" value="1">
-                                </td>
+                                    Gender: </td>
+                                <td colspan="3" style="width:90%">
+                                    <?php
+                                    if ($row['GENDER_REPLACE'] == 'M') {
+                                        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        echo 'Male<input type="radio" checked="true" style="width:0px;" name="gender" id="gender" value="M">';
+                                    } elseif ($row['GENDER_REPLACE'] == 'F') {
+                                        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" checked="true" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        echo 'Male<input type="radio" style="width:0px;"  name="gender" id="gender" value="M">';
+                                    } else {
+                                        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        echo 'Male<input type="radio"  name="gender" style="width:0px;" id="gender" value="M">';
+                                    }
+                                    ?>
+                                </td>                              
                             </tr>
 
+                            <tr>
+                                <td style="width:20% ;  padding-left: 22px;">
+                                    Date of Birth: 
+                                </td>
+
+                                <td style="width:50%">
+                                    <input type="text" name="dob" value="<?php echo $dateof; ?>" id="datepicker"  />
+                                </td>
+                            </tr>
 
                             <tr>
                                 <td colspan="4">
@@ -132,9 +203,6 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                                 State</td>
                                             <td style="width:40%">
                                                 <select name="state">
-                                                    <!-- <option value="md">MD</option>
-                                                    <option value="va">VA</option>
-                                                    <option value="wv">WV</option> -->
                                                     <?php
                                                     echo $db->getList('rf_state', 'state_cd', 'state_descr', $state);
                                                     ?>
@@ -165,7 +233,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                     <table style="width:70%">
                                         <tr>
                                             <td style="width:18%;  padding-left: 22px;">
-                                                Work:</td> <td style="width:40%"><input type="text" id="work" name="work" style="width: 150px;" value="<?php echo $work; ?>"
+                                                Work:</td> <td style="width:40%; padding-left: 12px;"><input type="text" id="work" name="work" style="width: 150px;" value="<?php echo $work; ?>"
                                                                                     size="15" maxlength="15" />
                                             </td>
                                             <td style="width:10%">
@@ -175,9 +243,9 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                         </tr>
                                         <tr><td  style="width:18%;  padding-left: 22px;">
 
-                                                Email:</td> <td colspan="3" style="width:90%"><p><input type="text" name="email" size="75" maxlength="75"
-                                                                                                    value="<?php echo $email; ?>"
-                                                                                                    />
+                                                Email:</td> <td colspan="3" style="width:90%"><p><input type="text" name="email" id="email" size="75" maxlength="75" value="<?php echo $email; ?>" />
+                                                    <span id="resultt" style="font-weight:bold;"></span>  
+
                                                 </p>
                                             </td>
 
@@ -185,8 +253,21 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                         <tr>
 
                                             <td colspan="4" style="width:18%;  padding-left: 22px;">
-                                                Notification Preference:&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" name="notifypref" value="email">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" name="notifypref" value="text">
+                                                Notification Preference:&nbsp;&nbsp;&nbsp;
+
+                                                <?php
+                                                if ($row['NOTIFICATION_PRE'] == 'E') {
+                                                    echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" checked="true" name="notifypref" value="E">';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" id="notifypref" name="notifypref" value="T">';
+                                                } elseif ($row['NOTIFICATION_PRE'] == 'T') {
+                                                    echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" name="notifypref" value="E">';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" checked="true" id="notifypref" name="notifypref" value="T">';
+                                                } else {
+                                                    echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" name="notifypref" value="E">';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" id="notifypref" name="notifypref" value="T">';
+                                                }
+                                                ?>
+
                                             </td>
                                         </tr>
                                     </table>
@@ -198,7 +279,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                 <td colspan="4" style="width:100%;">
                                     <table style="width:40%;" align="center"><tr>
                                             <td style="width:50%;">
-                                                <p> <input type="submit" name="action" value="Save" style="background-color:  #3a6a8e;border-radius:5px;height: 35px; width: 100px"/>
+                                                <p> <input type="submit" name="action" id="fsubmit" value="Save" style="background-color:  #3a6a8e;border-radius:5px;height: 35px; width: 100px"/>
                                                 </p>
                                             </td>
                                             <td style="width:50%;">
@@ -254,6 +335,10 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
             $gender = $_POST['gender'];
             $email = $_POST['email'];
             $middlename1 = $_POST['middlename'];
+            $notifypref = $_POST['notifypref'];
+            $dateOfBirth = $_POST['dob'];
+            
+
 
 
 
@@ -268,12 +353,12 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
             $num_rows = mysql_num_rows($result);
 
             if ($num_rows == 0) {
-  mysql_query("INSERT INTO patient (patient_id,account_id,last_name,first_name,email_address, middle_name ,ADDR_street1 ,ADDR_CITY , WORK_PHONE , CELL_PHONE , ZIP_CD)
-	VALUES (0,'$account_id','$lastname','$firstname','$email' , '$middlename1','$street' , '$city', '$work1' ,'$cell1', '$zip1')");
+                mysql_query("INSERT INTO patient (patient_id,account_id,last_name,first_name,email_address, middle_name ,ADDR_street1 ,ADDR_CITY , WORK_PHONE , CELL_PHONE , ZIP_CD , GENDER_REPLACE , NOTIFICATION_PRE , ADDR_STATE , DATE_OF_BIRTH  )
+	VALUES (0,'$account_id','$lastname','$firstname','$email' , '$middlename1','$street' , '$city', '$work1' ,'$cell1', '$zip1' , '$gender' , '$notifypref' , '$state' , '$dateOfBirth' )");
             } else {
 
                 mysql_query("update patient set last_name='$lastname',first_name='$firstname',email_address='$email' , WORK_PHONE='$work1'
-                        , middle_name='$middlename1' , ADDR_street1='$street' , ADDR_CITY='$city' , ZIP_CD='$zip1' , CELL_PHONE='$cell1' WHERE account_id = '$account_id' ");
+                        , middle_name='$middlename1' , ADDR_street1='$street' , ADDR_CITY='$city' , ZIP_CD='$zip1' , CELL_PHONE='$cell1' , GENDER_REPLACE='$gender' , NOTIFICATION_PRE='$notifypref' ,ADDR_STATE='$state' , DATE_OF_BIRTH='$dateOfBirth' WHERE account_id = '$account_id' ");
             }
 
 
@@ -283,7 +368,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
         } else if ($_POST['action'] == 'Close')
             $nextpage = 'mainp.php';
     }
-   
+
     header("location:" . $nextpage);
     exit;
 }

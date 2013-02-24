@@ -188,11 +188,11 @@ Comments:</p> </td>
 		if( $_POST['action']=='Send Now') {
 
 		// save info to db
-		$con = mysql_connect("localhost","root");
+		$con = mysql_connect($_SESSION['databaseURL'], $_SESSION['databaseUName'], $_SESSION['databasePWord']);
 		if (!$con) {
 			die('Could not connect: ' . mysql_error());
 		}
-		mysql_select_db("prijal_healthmd", $con);
+		mysql_select_db($_SESSION['databaseName'], $con);
 		$referral_id=$_SESSION['referral_id'];
 		$testresults = $_POST['testresults'];
 		$comments = $_POST['comments'];

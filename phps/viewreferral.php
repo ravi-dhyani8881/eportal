@@ -58,7 +58,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 		// get details from the PATIENT table
 
-		$result = mysql_query("SELECT last_name,first_name from PATIENT where patient_id = '$patient_id'");
+		$result = mysql_query("SELECT last_name,first_name , GENDER_REPLACE , DATE_OF_BIRTH from PATIENT where patient_id = '$patient_id'");
 
 		$patient_row = mysql_fetch_assoc($result);
 
@@ -186,13 +186,21 @@ Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <td style="width:30%">
 
-Gender:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="gender" size="10" maxlength="10" />
+    Gender:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="gender" value="<?php if ($patient_row['GENDER_REPLACE'] == 'M') {
+                                        echo 'Male';
+                                        
+                                    } elseif ($patient_row['GENDER_REPLACE'] == 'F') {
+                                        echo 'Female';
+                                    } else {
+                                        echo 'Not Mention';                                     
+                                    }
+                                    ?>" size="10" maxlength="10" />
 
 </td>
 
 <td style="width:50%">
 
-Date of Birth: <input type="text" name="dob"  size="10" maxlength="dob" />
+    Date of Birth: <input type="text" name="dob" value="<?php echo $patient_row['DATE_OF_BIRTH']; ?>" size="10" maxlength="dob" />
 
 </td>
 

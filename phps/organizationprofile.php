@@ -251,12 +251,10 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                             <td style="width:40%">
 
                                                 <select name="state">
-
-                                                    <option value="md">MD</option>
-
-                                                    <option value="va">VA</option>
-
-                                                    <option value="wv">WV</option></select>
+                                                    <?php
+                                                    echo $db->getList('rf_state', 'state_cd', 'state_descr', $state);
+                                                    ?>
+                                                </select>
 
 
 

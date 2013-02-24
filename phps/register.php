@@ -56,8 +56,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                             $("#resultt" ).empty().append("Username Is Not Available");
                             $("#resultt").css("color","red");
         					 
-                            $('input[type="submit"]').attr('disabled','disabled');
-        					
+                            $('input[type="submit"]').attr('disabled','disabled');        					
                         }
         			
                     });

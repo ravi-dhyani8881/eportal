@@ -74,7 +74,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
 
 
             <tr><td style="text-align:left;vertical-align:top" >
-                    <table class="main" style="width:100%">
+                    <table class="main" style="width:100%; padding: 20px 10px 0 16px;">
                         <?php
                         if (isset($_REQUEST['error']) == 'invalid') {
 
@@ -121,11 +121,11 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                         </tr>
                         <tr>-->
 
-                        <td colspan="4" style="width:100%;">
+                        <td colspan="4" style="width:100%; padding: 10px 0 7px;">
                             <div class="new-reg"><a href="register.php">New Registration</a></div>
-                            <div style="   float: left;
+                            <div style="
                                  margin-bottom: 10px;
-                                 margin-left: 15px;">
+                                 margin-left: 135px;">
                                 <table style="width:100%;text-align:center;">
                                     <tr>
                                         <td style="width:30%" class="sub-bttn">

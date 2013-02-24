@@ -5,6 +5,8 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
     ?>
     <script type="text/javascript">
         jQuery(function($){   
+            $("input").attr('disabled','disabled');
+            $("option").attr('disabled','disabled');
             $("#cell").mask("(999) 999-9999");
             $("#work").mask("(999) 999-9999? x99999");   
             $("#zip").mask("?99999-9999");   
@@ -37,7 +39,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
             //	}
             $account_id = $_SESSION['patient_account_id'];
             $result = mysql_query("SELECT last_name,first_name,email_address , middle_name ,ADDR_street1 ,
-                    ADDR_CITY  , ADDR_STATE ,ZIP_CD , WORK_PHONE , CELL_PHONE FROM  patient WHERE account_id = '$account_id'");
+                    ADDR_CITY  , ADDR_STATE ,ZIP_CD , WORK_PHONE , CELL_PHONE , GENDER_REPLACE , NOTIFICATION_PRE , DATE_OF_BIRTH FROM  patient WHERE account_id = '$account_id'");
             $row = mysql_fetch_assoc($result);
             $lastname = $row['last_name'];
             $firstname = $row['first_name'];
@@ -51,6 +53,7 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
             $zip = $row['ZIP_CD'];
             $work = $row['WORK_PHONE'];
             $cell = $row['CELL_PHONE'];
+            $dateof = $row['DATE_OF_BIRTH'];
             ?>
         </td>
         <td style="background-color:white;height:600px;width:900px;text-align:top;">
@@ -98,11 +101,31 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                             <tr>
 
                                 <td style="width:18%;  padding-left: 22px;">
-                                    Gender: </td><td colspan="3" style="width:90%">Female&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" value="0">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Male<input type="radio" name="gender" value="1">
+                                    Gender: </td><td colspan="3" style="width:90%">                                    
+                                    <?php
+                                    if ($row['GENDER_REPLACE'] == 'M') {
+                                        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        echo 'Male<input type="radio" checked="true" style="width:0px;" name="gender" id="gender" value="M">';
+                                    } elseif ($row['GENDER_REPLACE'] == 'F') {
+                                        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" checked="true" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        echo 'Male<input type="radio" style="width:0px;"  name="gender" id="gender" value="M">';
+                                    } else {
+                                        echo 'Female&nbsp;&nbsp;&nbsp;<input  type="radio" style="width:0px;" name="gender" id="gender" value="F">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                                        echo 'Male<input type="radio"  name="gender" style="width:0px;" id="gender" value="M">';
+                                    }
+                                    ?>
                                 </td>
                             </tr>
 
+                             <tr>
+                                <td style="width:20% ;  padding-left: 22px;">
+                                    Date of Birth: 
+                                </td>
+
+                                <td style="width:50%">
+                                    <input type="text" name="dob" value="<?php echo $dateof; ?>" id="datepicker"  />
+                                </td>
+                            </tr>
 
                             <tr>
                                 <td colspan="4">
@@ -185,8 +208,22 @@ if (!isset($_POST['action'])) { // if page is not submitted to itself echo the f
                                         <tr>
 
                                             <td colspan="4" style="width:18%;  padding-left: 22px;">
-                                                Notification Preference:&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" name="notifypref" value="email">
-                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" name="notifypref" value="text">
+                                                Notification Preference:&nbsp;&nbsp;&nbsp;
+                                                
+                                                
+                                                  <?php
+                                                if ($row['NOTIFICATION_PRE'] == 'E') {
+                                                    echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" checked="true" name="notifypref" value="E">';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" id="notifypref" name="notifypref" value="T">';
+                                                } elseif ($row['NOTIFICATION_PRE'] == 'T') {
+                                                    echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" name="notifypref" value="E">';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" checked="true" id="notifypref" name="notifypref" value="T">';
+                                                } else {
+                                                    echo '&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;<input type="radio" id="notifypref" name="notifypref" value="E">';
+                                                    echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Text<input type="radio" id="notifypref" name="notifypref" value="T">';
+                                                }
+                                                ?>
+                                                
                                             </td>
                                         </tr>
                                     </table>

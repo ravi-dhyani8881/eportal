@@ -145,7 +145,7 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
  	echo "<td>" . $row['fn'] . $row['ln'] . "</td>";
 
- 	echo "<td>" . $row['gender_cd'] . "</td>";
+ 	echo "<td>" . $row['GENDER_REPLACE'] . "</td>";
 
  	echo "<td>" . $row['date_of_birth'] . "</td>";
 
@@ -153,7 +153,7 @@ top: 30px;" cellpadding="0px" cellspacing="0px;" >
 
 
 
- 	echo "<td><input type=\"radio\" name=\"dv_account_id\" value=\"" . $row['referral_id']. "\"><td>";
+ 	echo "<td><input type=\"radio\" name=\"dv_account_id\" checked=\"checked\" value=\"" . $row['referral_id']. "\"><td>";
 
  	echo "</tr>";
 
